@@ -1,5 +1,8 @@
 ## Configura sudo affinchè un utente possa eseguire solo un comando specifico (e.s: nmap)
-``test
+```
+test
+codice = 1
+```
 ## Configura sudo affinchè un utente possa eseguire solo un comando specifico ma senza un parametro (e.s: si puo eseguire nmap ma non nmap -p)
 
 ## Nota: si possono mettere espressioni regolari nel file sudoers
