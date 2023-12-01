@@ -1,4 +1,4 @@
-## Configura sudo affinchè un utente possa eseguire solo un comando specifico (e.s: nmap)
+### Configura sudo affinchè un utente possa eseguire solo un comando specifico (e.s: nmap)
 ```
 #!/bin/bash
 echo "Hello World"
