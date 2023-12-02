@@ -1,7 +1,8 @@
-### Configura sudo affinchè un utente possa eseguire solo un comando specifico (e.s: nmap)
+### Configura sudo affinchè un utente possa eseguire solo un comando specifico (e.s: cat sul file shadow)
 ```
 #!/bin/bash
-echo "Hello World"
+sudo visudo
+# pippo  ALL=(ALL:ALL) /usr/bin/cat /etc/shadow
 ```
 ### Configura sudo affinchè un utente possa eseguire solo un comando specifico ma senza un parametro (e.s: si puo eseguire nmap ma non nmap -p)
 
