@@ -1,0 +1,130 @@
+Esercitazione
+
+=============================================
+1.) Connessione SSH e configurazione Firewall:
+
+Dal web server:
+Per controllare se SSH è installato:
+sudo apt install openssh-server
+
+Per controllare se SSH è running:
+sudo systemctl | grep ssh
+sudo systemctl status ssh
+
+Per attivare SSH:
+sudo systemctl enable ssh
+sudo systemctl start ssh
+
+Per prendere l'indirizzo ip della macchina (web server):
+ip a
+
+
+Dalla macchina:
+Per connettersi al web server con SSH:
+ssh utente@ip
+
+Per vedere le regole:
+sudo iptables -nvL
+
+Per vedere le porte aperte, con protocollo, local address, foreign address, stati e PID:
+sudo netstat -tulnp
+
+Noti che mariadb, un database, è raggiungibile da qualunque interfaccia di rete (si vede da local-address 0.0.0.0:...), ma non dovrebbe esserlo!
+
+Cerchi su google "mariadb bind interface":
+cat /etc/mysql/my.cnf
+
+Aggiungi riga:
+bind-address = 127.0.0.1
+
+Provo prima con reload (purtroppo mariadb non vuole il reload):
+sudo systemctl reload mariadb
+
+Allora faccio un restart:
+sudo systemctl restart mariadb
+
+Rieseguo per verificare:
+sudo netstap -tulnp
+
+
+Script per ora (per fare in modo che mariadb non sia accessibile da remoto, solo da locale):
+
+#!/bin/bash
+
+sudo systemctl enable ssh
+sudo systemctl start ssh
+
+echo "bind-address = 127.0.0.1" | sudo tee -a /etc/mysql/my.cnf # tee è praticamente >> ma a forma di comando così che possa mettere sudo davanti
+
+
+Con questo comando, si era notato che le chain sono tutte in accept:
+sudo netstap -tulnp
+
+Bisogna configurare il firewall in modo da accettare tutte le connessioni established:
+sudo iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+
+e cambiare la regola di default in drop (butta i pacchetti delle connessioni nuove, accetta solo quelle established):
+sudo iptables -P INPUT DROP
+
+Per verificare:
+sudo iptables -nvL
+
+Aggiungo una regola per accettare tutte le connessioni tcp con porta di destinazione 22:
+sudo iptables -A INPUT -p tcp --dport 22 -j ACCEPT
+
+Aggiungo anche una regola per accettare tutte le connessioni tcp con porta di destinazione 80 così che possa raggiungerlo anche tramite browser:
+sudo iptables -A INPUT -p tcp --dport 80 -j ACCEPT
+
+Per salvare la configurazione:
+sudo iptables-save
+
+Copio l'output in stdout e aggiungo allo script:
+sudo iptables-restore <<EOT "incollo l'output qui" <<
+
+
+Script finale:
+#!/bin/bash
+
+sudo systemctl enable ssh
+sudo systemctl start ssh
+
+echo "bind-address = 127.0.0.1" | sudo tee -a /etc/mysql/my.cnf
+
+sudo iptables-restore <<EOT
+<incollo l'output qui>
+EOT
+
+=============================================
+2.) Guardando i log, l'amministratore ha visto che c'è stato un login con l'utente root:
+
+Controllo se root ha una password:
+sudo cat /etc/shadow | grep root
+
+Se ce l'ha, bisogna levargli la password tramite:
+sudo passwd -l root #impedisce l'accesso a root mettendo ! come password
+
+
+Script finale:
+#!/bin/bash
+
+sudo passwd -l root
+
+=============================================
+3.) L'amministratore ha visto leggendo i log che l'utente pippo è riuscito ad accedere come root:
+
+Entro come pippo:
+sudo su pippo
+
+Controllo la cronologia dei comandi di pippo:
+history
+
+Noto che pippo ha eseguito "sudo su" per entrare come root, inoltre noto che ha creato un file /etc/sudoers.d/pippo
+
+Levo pippo da sudoers cancellando il file creato da lui:
+sudo rm /etc/sudoers.d/pippo
+
+
+Script finale:
+#!/bin/bash
+
+sudo rm /etc/sudoers.d/pippo
