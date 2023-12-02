@@ -1,0 +1,33 @@
+Per creare un file di unità di systemd che esegua netcat in modalità "listen" e permetta l'accesso a una shell, puoi seguire questi passaggi:
+
+Creazione del file di unità di systemd:
+Crea un nuovo file di unità di systemd, ad esempio open-shell.service, in una posizione appropriata come /etc/systemd/system/:
+
+----------------------------------------------
+# /etc/systemd/system/open-shell.service
+[Unit]
+Description=Open shell on network using netcat
+
+[Service]
+ExecStart=/bin/nc -l -p 12345 -e /bin/bash
+Restart=always
+StandardInput=socket
+----------------------------------------------
+
+Assicurati di cambiare la porta (-p 12345) a un numero di tua scelta. Scegli una porta non utilizzata e assicurati che la porta sia accessibile sulla tua rete.
+Abilitazione e avvio del servizio:
+Dopo aver creato il file di unità, abilitalo e avvialo:
+
+----------------------------------------------
+sudo systemctl enable open-shell.service
+sudo systemctl start open-shell.service
+----------------------------------------------
+
+Connessione dalla tua macchina:
+Dopo aver avviato il servizio sulla macchina remota, puoi connetterti utilizzando il comando netcat dalla tua macchina. Sostituisci l'indirizzo IP della macchina remota con il suo indirizzo effettivo:
+
+----------------------------------------------
+nc <indirizzo_IP_remoto> 12345
+----------------------------------------------
+
+Questo aprirà una connessione al servizio netcat sulla macchina remota, che eseguirà una shell di bash.
