@@ -16,18 +16,24 @@ sudo visudo
 # pippo  ALL=(ALL:ALL) /usr/bin/cat /etc/shadow
 # pippo  ALL=(ALL:ALL) /usr/bin/nmap
 ```
-### Configura sudo affinchè un utente possa eseguire solo un comando specifico ma senza un parametro (e.s: si puo eseguire nmap ma non nmap -p)
+### Configura sudo affinchè un utente possa eseguire solo un comando specifico ma senza un parametro (e.s: si puo eseguire nmap ma non nmap -p, )
 ```
 #!/bin/bash
 sudo visudo
-# pippo  ALL=(ALL:ALL) /usr/bin/nmap !-p
+# pippo  ALL=(ALL:ALL) /usr/bin/nmap [0-9]*.[0-9]*.[0-9]*.[0-9]*
 ```
-### Nota: si possono mettere espressioni regolari nel file sudoers
-
 ### Cercare tutti gli eseguibili con SUID
-
+```
+#!/bin/bash
+sudo visudo
+sudo find / -type f -perm /4000
+```
 ### Cercare tutti gli eseguibili con GUID
-
+```
+#!/bin/bash
+sudo visudo
+sudo find / -type f -perm /2000
+```
 ### Creare uno unit file di Systemd per permettere una shell aperta a tutti sulla rete (netcat in modalità listen con il processo /bin/bash) e provare a connettersi dalla propria macchina usando netcat
 
 ### Installare e configurare un modulo PAM per richiedere caratteristiche minime alla password (min 8 caratteri, maiuscole, minuscole e simboli)
