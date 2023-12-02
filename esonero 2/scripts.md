@@ -1,11 +1,27 @@
-### Configura sudo affinchè un utente possa eseguire solo un comando specifico (e.s: cat sul file shadow)
+### Comandi utili
+```
+### SSH ###
+ssh utente@ip -p port
+sudo systemctl | grep ssh
+sudo apt install openssh-server
+sudo systemctl enable ssh
+sudo systemctl start ssh
+```
+### Configura sudo affinchè un utente possa eseguire solo un comando specifico (e.s: cat sul file shadow, nmap)
+```
+#!/bin/bash
+sudo chown root:root /usr/bin/nmap
+sudo chmod 700 /usr/bin/nmap
+sudo visudo
+# pippo  ALL=(ALL:ALL) /usr/bin/cat /etc/shadow
+# pippo  ALL=(ALL:ALL) /usr/bin/nmap
+```
+### Configura sudo affinchè un utente possa eseguire solo un comando specifico ma senza un parametro (e.s: si puo eseguire nmap ma non nmap -p)
 ```
 #!/bin/bash
 sudo visudo
-# pippo  ALL=(ALL:ALL) /usr/bin/cat /etc/shadow
+# pippo  ALL=(ALL:ALL) /usr/bin/nmap !-p
 ```
-### Configura sudo affinchè un utente possa eseguire solo un comando specifico ma senza un parametro (e.s: si puo eseguire nmap ma non nmap -p)
-
 ### Nota: si possono mettere espressioni regolari nel file sudoers
 
 ### Cercare tutti gli eseguibili con SUID
