@@ -25,13 +25,11 @@ sudo visudo
 ### Cercare tutti gli eseguibili con SUID
 ```
 #!/bin/bash
-sudo visudo
 sudo find / -type f -perm /4000
 ```
 ### Cercare tutti gli eseguibili con GUID
 ```
 #!/bin/bash
-sudo visudo
 sudo find / -type f -perm /2000
 ```
 ### Creare uno unit file di Systemd per permettere una shell aperta a tutti sulla rete (netcat in modalità listen con il processo /bin/bash) e provare a connettersi dalla propria macchina usando netcat
@@ -43,7 +41,11 @@ sudo find / -type f -perm /2000
 ### Rendi la cartella /var/log leggibile solo da root
 
 ### Configura un utente per poter fare cat dei logs ma non essere amministratore (va configurato sudoers in modo opportuno)
-
+```
+#!/bin/bash
+sudo visudo
+# pippo  ALL=(ALL:ALL) /usr/bin/cat /var/log/*
+```
 ### Trova tutti i processi che hanno un file descriptor aperto dentro la cartella /var/log (il comando lsof tornerà comodo)
 
 ### Usa docker per effettuare un privilege escalation
