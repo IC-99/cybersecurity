@@ -11,10 +11,10 @@ script bash:
 sudo sytemctl enable ssh
 sudo systemctl start ssh
 echo “bind-address = 127.0.0.1” | sudo tee -a /etc/mysql/my.cnf
-sudo iptables -A INPUT -m state —state ESTABLISHED,RELATED -j ACCEPT
+sudo iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
 sudo iptables -P INPUT DROP
-sudo iptables -A INPUT -p tcp —dport 22 -j ACCEPT
-sudo iptables -A INPUT -p tcp —dport 80 -j ACCEPT
+sudo iptables -A INPUT -p tcp --dport 22 -j ACCEPT
+sudo iptables -A INPUT -p tcp --dport 80 -j ACCEPT
 sudo iptables-save
 sudo iptables-restore <<EOT configurazione EOT
 ```
