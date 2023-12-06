@@ -7,6 +7,7 @@ sudo apt install openssh-server
 sudo systemctl enable ssh
 sudo systemctl start ssh
 ```
+[altri comandi](https://github.com/Simone-Albero/university-stuff/blob/main/cyber_security/hardening.txt)
 ### Configura sudo affinchè un utente possa eseguire solo un comando specifico (e.s: cat sul file shadow, nmap)
 ```
 #!/bin/bash
