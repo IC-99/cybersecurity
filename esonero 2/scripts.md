@@ -39,7 +39,10 @@ sudo find / -type f -perm /2000
 ### Imposta una password a GRUB così da non permettere l'avvio del sistema operativo con parametri del kernel non standard
 
 ### Rendi la cartella /var/log leggibile solo da root
-
+```
+#!/bin/bash
+sudo chmod 700 /var/log
+```
 ### Configura un utente per poter fare cat dei logs ma non essere amministratore (va configurato sudoers in modo opportuno)
 ```
 #!/bin/bash
@@ -51,15 +54,49 @@ sudo visudo
 ### Usa docker per effettuare un privilege escalation
 
 ### Cercare se esiste un qualche file all'interno della home di un utente che sia scrivibile da tutti gli utenti
-
+```
+#!/bin/bash
+find /home/nomeutente -type f -perm -o+w -exec ls -la {} \;
+# chmod 644 /percorso/del/file
+```
 ### Cercare se esiste una cartella all'interno della home di un utente che sia scrivibile da tutti gli utenti
-
+```
+#!/bin/bash
+find /home/nomeutente -type d -perm -o+w -exec ls -lad {} \;
+# chmod 755 /percorso/della/cartella
+```
 ### Creare un utente con la password che scade ogni giorno
-
+```
+#!/bin/bash
+sudo useradd pippo
+sudo chage -M 1 pippo
+```
 ### Imposta Iptables affinchè sia permesso l'accesso alla macchina solo via SSH (TCP port 22)
-
+```
+#!/bin/bash
+sudo iptables -A INPUT -p tcp --dport 22 -j ACCEPT
+sudo iptables -A INPUT -j DROP
+```
 ### Imposta Iptables affinchè sia permesso l'accesso alla macchina solo via SSH (TCP port 22) dall'IP 1.2.3.4 e ad un webserver da qualunque IP (TCP port 80 e 443)
-
+```
+#!/bin/bash
+sudo iptables -A INPUT -p tcp --dport 22 -s 1.2.3.4 -j ACCEPT
+sudo iptables -A INPUT -p tcp --dport 80 -j ACCEPT
+sudo iptables -A INPUT -p tcp --dport 443 -j ACCEPT
+sudo iptables -P INPUT -j DROP
+```
 ### Imposta Iptables affinchè sia bloccato tutto il traffico Internet sulla macchina (gli utenti non possono navigare) ma sia funzionante il webserver (TCP port 80 e 443)
-
+```
+#!/bin/bash
+sudo iptables -A INPUT -p tcp --dport 80 -j ACCEPT
+sudo iptables -A INPUT -p tcp --dport 443 -j ACCEPT
+sudo iptables -A INPUT -j DROP
+```
 ### Imposta Iptables affinchè sia permesso l'accesso alla macchina solo via SSH (TCP port 22) e ad un webserver (TCP port 80 e 443)
+```
+#!/bin/bash
+sudo iptables -A INPUT -p tcp --dport 22 -j ACCEPT
+sudo iptables -A INPUT -p tcp --dport 80 -j ACCEPT
+sudo iptables -A INPUT -p tcp --dport 443 -j ACCEPT
+sudo iptables -A INPUT -j DROP
+```
