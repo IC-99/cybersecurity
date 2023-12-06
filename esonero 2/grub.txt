@@ -1,0 +1,21 @@
+Genera una Password Hash:
+-------------------------------------------
+grub-mkpasswd-pbkdf2
+# inserisci la password
+# copia l'hash generato
+-------------------------------------------
+
+Modifica il File di Configurazione di GRUB:
+-------------------------------------------
+sudo nano /etc/default/grub
+# GRUB_CMDLINE_LINUX_DEFAULT="quiet splash security=grub"
+# GRUB_ENABLE_CRYPTODISK=y
+# GRUB_HIDDEN_TIMEOUT=0
+# GRUB_PASSWORD=hash_generato
+-------------------------------------------
+
+Aggiorna la Configurazione di GRUB:
+-------------------------------------------
+sudo update-grub
+sudo reboot
+-------------------------------------------
