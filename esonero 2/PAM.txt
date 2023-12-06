@@ -1,0 +1,25 @@
+Installare il modulo PAM aggiuntivo:
+
+--------------------------------------------------------
+sudo apt-get install libpam-pwquality
+--------------------------------------------------------
+
+Configurare il modulo PAM:
+
+--------------------------------------------------------
+sudo nano /etc/security/pwquality.conf
+# minlen = 8
+# minclass = 3
+--------------------------------------------------------
+
+Modifica il file di configurazione PAM per utilizzare il modulo:
+--------------------------------------------------------
+sudo nano /etc/pam.d/common-password
+# Aggiungi o modifica la riga relativa alla password per includere il modulo 
+# password requisite pam_pwquality.so retry=3
+--------------------------------------------------------
+
+Riavvia il servizio PAM:
+--------------------------------------------------------
+sudo systemctl restart systemd-logind
+--------------------------------------------------------
