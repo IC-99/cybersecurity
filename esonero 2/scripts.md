@@ -50,7 +50,10 @@ sudo visudo
 # pippo  ALL=(ALL:ALL) /usr/bin/cat /var/log/*
 ```
 ### Trova tutti i processi che hanno un file descriptor aperto dentro la cartella /var/log (il comando lsof tornerà comodo)
-
+```
+#!/bin/bash
+sudo lsof | grep '/var/log'
+```
 ### Usa docker per effettuare un privilege escalation
 
 ### Cercare se esiste un qualche file all'interno della home di un utente che sia scrivibile da tutti gli utenti
