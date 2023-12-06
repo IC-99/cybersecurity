@@ -74,29 +74,65 @@ sudo chage -M 1 pippo
 ### Imposta Iptables affinchè sia permesso l'accesso alla macchina solo via SSH (TCP port 22)
 ```
 #!/bin/bash
+sudo iptables -P INPUT DROP
+sudo iptables -P FORWARD DROP
+sudo iptables -P OUTPUT ACCEPT
+
 sudo iptables -A INPUT -p tcp --dport 22 -j ACCEPT
-sudo iptables -A INPUT -j DROP
+
+sudo iptables -A INPUT -i lo -j ACCEPT
 ```
 ### Imposta Iptables affinchè sia permesso l'accesso alla macchina solo via SSH (TCP port 22) dall'IP 1.2.3.4 e ad un webserver da qualunque IP (TCP port 80 e 443)
 ```
 #!/bin/bash
+sudo iptables -P INPUT DROP
+sudo iptables -P FORWARD DROP
+sudo iptables -P OUTPUT ACCEPT
+
 sudo iptables -A INPUT -p tcp --dport 22 -s 1.2.3.4 -j ACCEPT
+
 sudo iptables -A INPUT -p tcp --dport 80 -j ACCEPT
 sudo iptables -A INPUT -p tcp --dport 443 -j ACCEPT
-sudo iptables -P INPUT -j DROP
+
+sudo iptables -A INPUT -i lo -j ACCEPT
 ```
 ### Imposta Iptables affinchè sia bloccato tutto il traffico Internet sulla macchina (gli utenti non possono navigare) ma sia funzionante il webserver (TCP port 80 e 443)
 ```
 #!/bin/bash
+sudo iptables -F
+sudo iptables -X
+
+sudo iptables -P INPUT DROP
+sudo iptables -P FORWARD DROP
+sudo iptables -P OUTPUT DROP
+
 sudo iptables -A INPUT -p tcp --dport 80 -j ACCEPT
 sudo iptables -A INPUT -p tcp --dport 443 -j ACCEPT
-sudo iptables -A INPUT -j DROP
+sudo iptables -A OUTPUT -p tcp --sport 80 -j ACCEPT
+sudo iptables -A OUTPUT -p tcp --sport 443 -j ACCEPT
+
+sudo iptables -A INPUT -i lo -j ACCEPT
+sudo iptables -A OUTPUT -o lo -j ACCEPT
+
+----------------------------------------------------------------
+sudo sh -c "iptables-save > /etc/iptables.rules"
+
+# Assicurati che le regole siano caricate all'avvio del sistema
+sudo iptables-save | sudo tee /etc/network/iptables.up.rules
+sudo systemctl enable netfilter-persistent
+sudo systemctl start netfilter-persistent
+----------------------------------------------------------------
 ```
 ### Imposta Iptables affinchè sia permesso l'accesso alla macchina solo via SSH (TCP port 22) e ad un webserver (TCP port 80 e 443)
 ```
 #!/bin/bash
+sudo iptables -P INPUT DROP
+sudo iptables -P FORWARD DROP
+sudo iptables -P OUTPUT ACCEPT
+
 sudo iptables -A INPUT -p tcp --dport 22 -j ACCEPT
 sudo iptables -A INPUT -p tcp --dport 80 -j ACCEPT
 sudo iptables -A INPUT -p tcp --dport 443 -j ACCEPT
-sudo iptables -A INPUT -j DROP
+
+sudo iptables -A INPUT -i lo -j ACCEPT
 ```
