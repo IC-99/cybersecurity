@@ -1,0 +1,3 @@
+echo "user ALL(ALL:ALL) /bin/cat" | sudo EDITOR="tee -a" visudo
+
+https://stackoverflow.com/questions/13626798/editing-the-sudo-file-in-a-shell-script
