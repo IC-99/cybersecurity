@@ -35,9 +35,9 @@ sudo find / -type f -perm /2000
 ### Creare uno unit file di Systemd per permettere una shell aperta a tutti sulla rete (netcat in modalità listen con il processo /bin/bash) e provare a connettersi dalla propria macchina usando netcat
 [link](https://github.com/IC-99/cybersecurity/blob/main/esonero%202/unit%C3%A0.txt)
 ### Installare e configurare un modulo PAM per richiedere caratteristiche minime alla password (min 8 caratteri, maiuscole, minuscole e simboli)
-
+[link](https://github.com/IC-99/cybersecurity/blob/main/esonero%202/PAM.txt)
 ### Imposta una password a GRUB così da non permettere l'avvio del sistema operativo con parametri del kernel non standard
-
+[link](https://github.com/IC-99/cybersecurity/blob/main/esonero%202/grub.txt)
 ### Rendi la cartella /var/log leggibile solo da root
 ```
 #!/bin/bash
